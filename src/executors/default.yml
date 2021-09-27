@@ -1,0 +1,11 @@
+description: >
+  This is the default executor for kelvintaywl/deepl Orb.
+docker:
+  - image: 'cimg/base:<<parameters.tag>>'
+parameters:
+  tag:
+    default: stable
+    description: >
+      Pick a specific cimg/base image variant:
+      https://hub.docker.com/r/cimg/base/tags
+    type: string
