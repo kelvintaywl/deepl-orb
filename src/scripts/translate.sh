@@ -24,8 +24,10 @@ for F in $@; do
     -d "source_lang=${SRC_LANG}" \
     -d "target_lang=${TGT_LANG}" \
     -d "tag_handling=${TAG_HANDLING}" \
-    -d "preserve_formatting=1" \
-    -d "split_sentences=0" \
+    -d "preserve_formatting=0" \
+    -d "split_sentences=1" \
+    -d "formality=${FORMALITY}" \
     -d "text=$(cat $F)" | jq -r ".translations[0].text")
-    echo $resp >> "${F}_${TGT_LANG}.md"
+    # truncate
+    echo $resp > $F
 done 

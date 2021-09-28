@@ -32,6 +32,13 @@ parameters:
     default: "**/*\.(md|MD|markdown)"
     description: |
       File paths to glob for.
+  formality:
+    type: enum
+    default: "default"
+    enum: ["default", "more", "less"]
+    description: |
+      Formality of the translated text.
+      See https://www.deepl.com/docs-api/translating-text/request/
 steps:
   - run:
       name: Translate files
@@ -40,4 +47,5 @@ steps:
         SRC_LANG: << parameters.source-lang >>
         TARGET_LANG: << parameters.target-lang >>
         TAG_HANDLING: << parameters.tag-handling >>
+        FORMALITY: << parameters.formality >>
       command: <<include(scripts/translate.sh)>> << parameters.file-paths >>
