@@ -1,11 +1,11 @@
 #! /usr/bin/env bash
 
-if [ ! $(command -v curl) ]; then
+if [ ! "$(command -v curl)" ]; then
     echo "curl is required but not found. Exiting"
     exit 1
 fi
 
-if [ ! $(command -v jq) ]; then
+if [ ! "$(command -v jq)" ]; then
     echo "jq is required but not found. Exiting"
     exit 1
 fi
@@ -15,7 +15,7 @@ if [ -z "${TGT_LANG}" ]; then
     exit 1
 fi
 
-if [ ! -f $INPUT_FILE_PATH ]; then
+if [ ! -f "${INPUT_FILE_PATH}" ]; then
     echo "input file path to a valid file is required. Exiting"
     exit 1
 fi
@@ -36,8 +36,8 @@ https://api-free.deepl.com/v2/document \
 -F "formality=${FORMALITY}" \
 -F "file=@${INPUT_FILE_PATH}" | jq .)
 
-doc_id=$(echo $resp | jq -r ".document_id")
-doc_key=$(echo $resp | jq -r ".document_key")
+doc_id=$(echo "${resp}" | jq -r ".document_id")
+doc_key=$(echo "${resp}" | jq -r ".document_key")
 
 done=0
 tries=5
@@ -49,7 +49,7 @@ do
     -d "document_key=${doc_key}" | jq .)
 
     ((tries=tries-1))
-    status=$(echo $status_resp | jq -r ".status")
+    status=$(echo "${status_resp}" | jq -r ".status")
 
     if [ "${status}" = "done" ]; then
         ((done=1))
@@ -61,17 +61,17 @@ do
         break
     fi
 
-    if [ $tries -eq 0 ]; then
+    if [ "${tries}" -eq 0 ]; then
         echo "Failed to fetch document from Deepl Document API after 5 tries."
         break
     fi
 
-    secs=$(echo $status_resp | jq -r ".seconds_remaining")
-    echo "Sleeping for ${secs} before polling again...\n"
+    secs=$(echo "${status_resp}" | jq -r ".seconds_remaining")
+    printf "Sleeping for %d secs before polling again...\n" "${secs}"
     sleep "$((secs))"
 done
 
-if [ $done -eq 0 ]; then
+if [ "${done}" -eq 0 ]; then
     exit 1
 fi
 
@@ -82,4 +82,4 @@ bin_data=$(curl -s -X POST \
 -d "document_key=${doc_key}")
 
 # NOTE: unfortunately, Deepl does not seem to respect CR or LR
-echo $bin_data > $OUTPUT_FILE_PATH
+echo "${bin_data}" > "${OUTPUT_FILE_PATH}"
