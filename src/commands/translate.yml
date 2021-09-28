@@ -1,7 +1,7 @@
 description: >
-  This command echos "Hello World" using file inclusion.
-# What will this command do?
-# Descriptions should be short, simple, and clear.
+  This command translates the specific file via Deepl API.
+  This uses the Document API endpoint, so limitations from the API apply.
+  See more details at https://www.deepl.com/docs-api/translating-documents/uploading/
 parameters:
   deepl-api-key:
     type: env_var_name
@@ -13,32 +13,39 @@ parameters:
     default: en
     description: |
       Source language of documents.
-      See https://www.deepl.com/docs-api/translating-text/request/
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
   target-lang:
     type: string
     description: |
       Target language for documents to be translated into.
-      See https://www.deepl.com/docs-api/translating-text/request/
-  tag-handling:
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
+  input-file-path:
     type: string
-    default: "xml"
     description: |
-      Set this to "xml" if your documents are written in Markdown.
-      Deepl will preserve the formatting as-is, as such.
-      Otherwise, set this as an empty string to disable.
-      See https://www.deepl.com/docs-api/translating-text/request/
-  file-paths:
+      File path for file to translate from.
+      Note that Deepl only supports the following file formats:
+        - txt
+        - docx
+        - pptx
+        - html
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
+  output-file-path:
     type: string
-    default: "**/*\.(md|MD|markdown)"
     description: |
-      File paths to glob for.
+      File path to file to output translation to.
+      Note that Deepl only supports the following file formats:
+        - txt
+        - docx
+        - pptx
+        - html
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
   formality:
     type: enum
     default: "default"
     enum: ["default", "more", "less"]
     description: |
       Formality of the translated text.
-      See https://www.deepl.com/docs-api/translating-text/request/
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
 steps:
   - run:
       name: Translate files
@@ -48,4 +55,4 @@ steps:
         TARGET_LANG: << parameters.target-lang >>
         TAG_HANDLING: << parameters.tag-handling >>
         FORMALITY: << parameters.formality >>
-      command: <<include(scripts/translate.sh)>> << parameters.file-paths >>
+      command: <<include(scripts/translate.sh)>> << parameters.input-file-path >> << parameters.output-file-path >>
