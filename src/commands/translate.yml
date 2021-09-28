@@ -53,7 +53,6 @@ steps:
         DEEPL_API_KEY: << parameters.deepl-api-key >>
         SRC_LANG: << parameters.source-lang >>
         TARGET_LANG: << parameters.target-lang >>
-        TAG_HANDLING: << parameters.tag-handling >>
         FORMALITY: << parameters.formality >>
         INPUT_FILE_PATH: << parameters.input-file-path >>
         OUTPUT_FILE_PATH: << parameters.output-file-path >>
