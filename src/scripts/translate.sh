@@ -15,12 +15,12 @@ if [ -z "${TGT_LANG}" ]; then
     exit 1
 fi
 
-if [ ! -f $1 ]; then
+if [ ! -f $INPUT_FILE_PATH ]; then
     echo "input file path to a valid file is required. Exiting"
     exit 1
 fi
 
-file_ext="${1##*.}"
+file_ext="${INPUT_FILE_PATH##*.}"
 if [[ ! $file_ext =~ ^(docx|pptx|html|txt)$ ]]; then
     echo "input file is unsupported. Exiting"
     exit 1
@@ -34,7 +34,7 @@ https://api-free.deepl.com/v2/document \
 -F "source_lang=${SRC_LANG}" \
 -F "target_lang=${TGT_LANG}" \
 -F "formality=${FORMALITY}" \
--F "file=@${1}" | jq .)
+-F "file=@${INPUT_FILE_PATH}" | jq .)
 
 doc_id=$(echo $resp | jq -r ".document_id")
 doc_key=$(echo $resp | jq -r ".document_key")
@@ -82,4 +82,4 @@ bin_data=$(curl -s -X POST \
 -d "document_key=${doc_key}")
 
 # NOTE: unfortunately, Deepl does not seem to respect CR or LR
-echo $bin_data > $2
+echo $bin_data > $OUTPUT_FILE_PATH

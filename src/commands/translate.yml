@@ -55,4 +55,6 @@ steps:
         TARGET_LANG: << parameters.target-lang >>
         TAG_HANDLING: << parameters.tag-handling >>
         FORMALITY: << parameters.formality >>
-      command: <<include(scripts/translate.sh)>> << parameters.input-file-path >> << parameters.output-file-path >>
+        INPUT_FILE_PATH: << parameters.input-file-path >>
+        OUTPUT_FILE_PATH: << parameters.output-file-path >>
+      command: <<include(scripts/translate.sh)>>
