@@ -47,8 +47,8 @@ workflows:
           path: ./src/tests
       # Publish development version(s) of the orb.
       - orb-tools/publish-dev:
-          orb-name: <namespace>/<orb-name>
-          context: <publishing-context> # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user.
+          orb-name: kelvintaywl/deepl
+          context: circleci_orb_publisher
           requires:
             - orb-tools/lint
             - orb-tools/pack
@@ -58,7 +58,7 @@ workflows:
       # dev:${CIRCLE_SHA1:0:7} version of your orb
       - orb-tools/trigger-integration-tests-workflow:
           name: trigger-integration-dev
-          context: <publishing-context>
+          context: circleci_orb_publisher
           requires:
             - orb-tools/publish-dev
 
@@ -78,8 +78,8 @@ workflows:
       # be skipped.
       # e.g. [semver:patch] will cause a patch version to be published.
       - orb-tools/dev-promote-prod-from-commit-subject:
-          orb-name: <namespace>/<orb-name>
-          context: <publishing-context>
+          orb-name: kelvintaywl/deepl
+          context: circleci_orb_publisher
           add-pr-comment: false
           fail-if-semver-not-indicated: true
           publish-version-tag: false
