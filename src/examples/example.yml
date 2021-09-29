@@ -6,7 +6,7 @@ description: >
 usage:
   version: 2.1
   orbs:
-    deepl: kelvintaywl/deepl@1.2.3
+    deepl: kelvintaywl/deepl@0.1.0
   workflows:
     translate_zen_of_python:
       jobs:
@@ -20,10 +20,10 @@ usage:
                     python -c "import this" &> zen.txt
               - deepl/translate:
                   input-file-path: zen.txt
-                  source-lang: en
-                  target-lang: ja
+                  source-lang: EN
+                  target-lang: JA
                   output-file-path: zen_ja.txt
-              - store-artifacts:
+              - store_artifacts:
                   path: zen_ja.txt
             # make sure to set your DEEPL_API_KEY via context
             context: deepl_credentials
