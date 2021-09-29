@@ -52,7 +52,7 @@ steps:
       environment:
         DEEPL_API_KEY: << parameters.deepl-api-key >>
         SRC_LANG: << parameters.source-lang >>
-        TARGET_LANG: << parameters.target-lang >>
+        TGT_LANG: << parameters.target-lang >>
         FORMALITY: << parameters.formality >>
         INPUT_FILE_PATH: << parameters.input-file-path >>
         OUTPUT_FILE_PATH: << parameters.output-file-path >>
