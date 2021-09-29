@@ -1,0 +1,59 @@
+description: >
+  This command translates the specific file via Deepl API.
+  This uses the Document API endpoint, so limitations from the API apply.
+  See more details at https://www.deepl.com/docs-api/translating-documents/uploading/
+parameters:
+  deepl-api-key:
+    type: env_var_name
+    default: DEEPL_API_KEY
+    description: |
+      Environment variable name where the Deepl API key is set to.
+  source-lang:
+    type: string
+    default: en
+    description: |
+      Source language of documents.
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
+  target-lang:
+    type: string
+    description: |
+      Target language for documents to be translated into.
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
+  input-file-path:
+    type: string
+    description: |
+      File path for file to translate from.
+      Note that Deepl only supports the following file formats:
+        - txt
+        - docx
+        - pptx
+        - html
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
+  output-file-path:
+    type: string
+    description: |
+      File path to file to output translation to.
+      Note that Deepl only supports the following file formats:
+        - txt
+        - docx
+        - pptx
+        - html
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
+  formality:
+    type: enum
+    default: "default"
+    enum: ["default", "more", "less"]
+    description: |
+      Formality of the translated text.
+      See https://www.deepl.com/docs-api/translating-documents/uploading/
+steps:
+  - run:
+      name: Translate files
+      environment:
+        DEEPL_API_KEY: << parameters.deepl-api-key >>
+        SRC_LANG: << parameters.source-lang >>
+        TARGET_LANG: << parameters.target-lang >>
+        FORMALITY: << parameters.formality >>
+        INPUT_FILE_PATH: << parameters.input-file-path >>
+        OUTPUT_FILE_PATH: << parameters.output-file-path >>
+      command: <<include(scripts/translate.sh)>>

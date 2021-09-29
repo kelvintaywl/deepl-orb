@@ -1,0 +1,29 @@
+description: >
+  Sample example description.
+# Provide a use-case based example for using this orb.
+# Everything in the `usage` section will be displayed in the orb registry.
+# Comments are not retained.
+usage:
+  version: 2.1
+  orbs:
+    deepl: kelvintaywl/deepl@1.2.3
+  workflows:
+    translate_zen_of_python:
+      jobs:
+        - translate:
+            docker:
+              - image: cimg/python:3.8
+            steps:
+              - run:
+                  name: Save "Zen of Python" text to a file
+                  command: |
+                    python -c "import this" &> zen.txt
+              - deepl/translate:
+                  input-file-path: zen.txt
+                  source-lang: en
+                  target-lang: ja
+                  output-file-path: zen_ja.txt
+              - store-artifacts:
+                  path: zen_ja.txt
+            # make sure to set your DEEPL_API_KEY via context
+            context: deepl_credentials
