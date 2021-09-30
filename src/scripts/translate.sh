@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+# DEEPL_API_KEY is originally passed in indicating the env var name
+# to locate the Deepl API key.
+DEEPL_API_KEY=$(eval echo "\$$DEEPL_API_KEY")
+
 if [ ! "$(command -v curl)" ]; then
     echo "curl is required but not found. Exiting"
     exit 1
