@@ -50,10 +50,10 @@ steps:
   - run:
       name: Translate files
       environment:
-        DEEPL_API_KEY: << parameters.deepl-api-key >>
-        SRC_LANG: << parameters.source-lang >>
-        TGT_LANG: << parameters.target-lang >>
-        FORMALITY: << parameters.formality >>
-        INPUT_FILE_PATH: << parameters.input-file-path >>
-        OUTPUT_FILE_PATH: << parameters.output-file-path >>
+        PARAM_DEEPL_API_KEY: << parameters.deepl-api-key >>
+        PARAM_SRC_LANG: << parameters.source-lang >>
+        PARAM_TGT_LANG: << parameters.target-lang >>
+        PARAM_FORMALITY: << parameters.formality >>
+        PARAM_INPUT_FILE_PATH: << parameters.input-file-path >>
+        PARAM_OUTPUT_FILE_PATH: << parameters.output-file-path >>
       command: <<include(scripts/translate.sh)>>
