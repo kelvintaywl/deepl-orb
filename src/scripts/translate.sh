@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-# DEEPL_API_KEY is originally passed in indicating the env var name
+# PARAM_DEEPL_API_KEY indicates the env var name
 # to locate the Deepl API key.
-DEEPL_API_KEY=$(eval echo "\$$DEEPL_API_KEY")
+DEEPL_API_KEY=$(eval echo "\$$PARAM_DEEPL_API_KEY")
 
 if [ ! "$(command -v curl)" ]; then
     echo "curl is required but not found. Exiting"
@@ -14,17 +14,17 @@ if [ ! "$(command -v jq)" ]; then
     exit 1
 fi
 
-if [ -z "${TGT_LANG}" ]; then
+if [ -z "${PARAM_TGT_LANG}" ]; then
     echo "target language is not set. Exiting"
     exit 1
 fi
 
-if [ ! -f "${INPUT_FILE_PATH}" ]; then
+if [ ! -f "${PARAM_INPUT_FILE_PATH}" ]; then
     echo "input file path to a valid file is required. Exiting"
     exit 1
 fi
 
-file_ext="${INPUT_FILE_PATH##*.}"
+file_ext="${PARAM_INPUT_FILE_PATH##*.}"
 if [[ ! $file_ext =~ ^(docx|pptx|html|txt)$ ]]; then
     echo "input file is unsupported. Exiting"
     exit 1
@@ -35,10 +35,10 @@ https://api-free.deepl.com/v2/document \
 -H "Content-Type: multipart/form-data" \
 -F "auth_key=${DEEPL_API_KEY}" \
 -F "tag_handling=xml" \
--F "source_lang=${SRC_LANG}" \
--F "target_lang=${TGT_LANG}" \
--F "formality=${FORMALITY}" \
--F "file=@${INPUT_FILE_PATH}" | jq .)
+-F "source_lang=${PARAM_SRC_LANG}" \
+-F "target_lang=${PARAM_TGT_LANG}" \
+-F "formality=${PARAM_FORMALITY}" \
+-F "file=@${PARAM_INPUT_FILE_PATH}" | jq .)
 
 doc_id=$(echo "${resp}" | jq -r ".document_id")
 doc_key=$(echo "${resp}" | jq -r ".document_key")
@@ -85,5 +85,4 @@ bin_data=$(curl -s -X POST \
 -d "auth_key=${DEEPL_API_KEY}" \
 -d "document_key=${doc_key}")
 
-# NOTE: unfortunately, Deepl does not seem to respect CR or LR
-echo "${bin_data}" > "${OUTPUT_FILE_PATH}"
+echo "${bin_data}" > "${PARAM_OUTPUT_FILE_PATH}"
